@@ -18,6 +18,11 @@ Activate your source
 source ~/.bashrc
 ```
 ### 2) Install UV
+Windows
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+Linux
 ```sh
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
@@ -25,9 +30,16 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ```sh
 uv python install 3.14
 ```
+### 4) Install nvm
+Windows (In an admin powershell)
+```powershell
+winget install CoreyButler.NVMforWindows
+nvm install lts
+nvm use 24.13.1
+```
 
 ## Initializing the Project
-If you already have uv and python installed, navigate to the project directory and initialize the project:
+If you already have uv and python installed, clone then navigate to the project directory and initialize the project:
 ```sh
 npm run install:deps
 ```
