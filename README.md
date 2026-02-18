@@ -41,20 +41,33 @@ nvm use 24.13.1
 ## Initializing the Project
 If you already have uv and python installed, clone then navigate to the project directory and initialize the project:
 ```sh
+# Both
 npm run install:deps
+# Windows after
+npm run config:scripts:win
 ```
 
 If you would like to just go ahead and run the project on the web 
 ```sh
+# Linux
 npm run web
+# Windows
+npm run web:win
 ```
 If you would like to run the project on the web and electron, run the following command 
 ```sh
+# Linux
 npm run start
+# Windows
+npm run start:win
 ```
 
 ## Setup if you would like to make a similar project
 To your new project copy over the main.cjs.example main.py.example and the package.json to your new project directory. Then run the following command:
 ```sh
+# Linux
 npm run init:project
+# windows
+npm run init:project:win
+npm run start:win
 ```
