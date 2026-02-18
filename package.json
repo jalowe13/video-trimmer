@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "init:project": "npm run scaffold && npm run install:deps && npm run configure",
+    "init:project:win": "npm run scaffold && npm run install:deps && npm run configure:win",
     "scaffold": "npm run scaffold:backend && npm run scaffold:frontend",
     "scaffold:backend": "npx -y shx mkdir -p backend && cd backend && uv init && uv python pin 3.14 && uv add fastapi[standard] ffmpeg-python",
     "scaffold:frontend": "npx -y create-vite@7 frontend --template react-ts",
@@ -10,11 +11,15 @@
     "install:backend": "cd backend && uv sync",
     "install:frontend": "cd frontend && npm install && npm i --save-dev electron concurrently wait-on",
     "configure": "npm run copy:files && npm run config:scripts",
+    "configure:win": "npm run copy:files && npm run config:scripts:win",
     "copy:files": "npm run copy:backend && npm run copy:frontend",
     "copy:backend": "npx -y shx cp -f main.py.example backend/main.py",
     "copy:frontend": "npx -y shx cp -n main.cjs.example frontend/main.cjs",
     "config:scripts": "cd frontend && npm pkg set main=\"main.cjs\" && npm pkg set scripts.electron=\"electron . --no-sandbox\" && npm pkg set scripts.start=\"concurrently \\\"npm run dev\\\" \\\"wait-on http://localhost:5173 && npm run electron\\\"\" && npm pkg set scripts.web=\"concurrently \\\"npm run dev\\\" \\\"cd ../backend && uv run fastapi dev main.py --app app\\\"\"",
+    "config:scripts:win": "cd frontend && npm pkg set main=\"main.cjs\" && npm pkg set scripts.dev=\"vite --host 127.0.0.1 --port 5173 --strictPort\" && npm pkg set scripts.electron=\"electron . --no-sandbox\" && npm pkg set scripts.start=\"concurrently \\\"npm run dev\\\" \\\"npm run electron\\\"\" && npm pkg set scripts.web=\"concurrently \\\"npm run dev\\\" \\\"uv --directory ../backend run fastapi dev main.py --app app\\\"\"",
     "start": "cd frontend && npm run start",
-    "web": "cd frontend && npm run web"
+    "web": "cd frontend && npm run web",
+    "start:win": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Set-Location frontend; Start-Process cmd.exe -ArgumentList '/c','npm.cmd run dev' -WindowStyle Normal; $url='http://127.0.0.1:5173/'; Write-Host ('[wait] ' + $url); while ($true) { try { $r = Invoke-WebRequest -UseBasicParsing -Uri $url -Method Get -TimeoutSec 2; if ($r.StatusCode -eq 200) { Start-Sleep -Milliseconds 500; break } } catch {} Start-Sleep -Milliseconds 200 }; Start-Process cmd.exe -ArgumentList '/c','npx.cmd electron . --no-sandbox' -WindowStyle Normal\"",
+    "web:win": "npm run config:scripts:win && npm run web"
   }
 }
